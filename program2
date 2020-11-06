@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define X 1e-5
+
+int check(double a,double b,double c);
+double S(double a,double b,double c);
+
+int main()
+{
+    
+    double a,b,c;
+    int flag = 0;
+    printf("Input a,b,c\n");
+    scanf("%lf %lf %lf", &a, &b, &c);
+    if(check(a, b, c)){
+        if(a == b && b ==c){
+            printf("等边三角形\n");
+        }
+        else {
+            if(a == b || b == c ||c == a){
+                printf("等腰");
+                flag = 1;
+            }
+            if(fabs(a*a+b*b-c*c)<X || fabs(a*a+c*c-b*b)<X || fabs(b*b+c*c-a*a)<X){
+                printf("直角");
+                flag = 1;
+            }
+            if(!flag){
+                printf("一般");
+            }
+            printf("三角形\n");
+
+        }
+        printf("S = %lf", S(a,b,c));
+
+    }
+    else{
+        printf("不是三角形\n");
+    }
+    return 0;
+
+}
+int check (double a, double b, double c){
+    if((a+b>c)&&(b+c>a)&&(c+a>b)){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+double S(double a,double b,double c){
+    double p,s;
+    p = (a+b+c)/2;
+    s = sqrt(p*(p - a)*(p - b)*(p - c));
+    return s;
+
+}
