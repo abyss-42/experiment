@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define PI 3.1415926
+
+double S(double a);
+double V(double a,double pi);
+
+int main()
+{
+   
+   double r;
+   const double pi = 3.1415926;
+   printf("Input r\n");
+   scanf("%lf", &r);
+   printf("S = %lf\n", S(r));
+   printf("V = %lf\n", V(r,pi));
+   return 0;
+}
+double S(double a){
+    double s;
+    s = 4 * PI * a * a;
+    return s;
+}
+double V(double a,double pi){
+    double v;
+    v = 4 / 3 * pi *a *a *a;
+    return v;
+}
