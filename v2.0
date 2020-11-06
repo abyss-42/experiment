@@ -1,0 +1,293 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int Input(char name[][30], int idscore[][30]);
+void Output(int idscore[][30] , int num , char name[][30]);
+void Sum_avg(int idscore[][30] ,int num);
+void Printlist(int idscore[][30] , int (*compare)(int a , int b) , int num , char name[][30]);
+void Dict(char name[][30], int idscore[][30],int (*compare)(int a , int b) , int num);
+void Search_by_id(int idscore[][30] , int num , char name[][30]);
+void Search_by_name(char name[][30] , int idscore[][30] , int num);
+void Analysis(int idscore[][30] , int num);
+int Descending(int a , int b);
+int Ascending(int a , int b);
+void Print_by_name(char name[][30] , int idscore[][30] , int num);
+void Sort(char name[][30] , int idscore[][30] , int num);
+void Printlist2(int idscore[][30], int (*compare)(int a , int b ) , int num , char name[][30]);
+
+int main()
+{
+   
+    char name[30][30];
+    int idscore[30][30];
+    int choice , num;
+    int flag = 0;
+
+    printf("1. Input record\n");
+    printf("2. Calculate total and average score of course\n");
+    printf("3. Sort in descending order by score\n");
+    printf("4. Sort in ascending order by score\n");
+    printf("5. Sort in ascending order by number\n");
+    printf("6. Sort in dictionary order by name\n");
+    printf("7. Search by number\n");
+    printf("8. Search by name\n");
+    printf("9. Statistic analysis\n");
+    printf("10.List record\n");
+    printf("11.Exit\n");
+    printf("Please enter your choice:\n");
+
+
+    scanf("%d" , &choice);
+
+    do{
+        if(choice == 1){
+            num = Input(name , idscore);
+            flag = 1;
+        }
+         if(choice == 2){
+            if(!flag) printf("please input record first");
+            else{
+                Sum_avg(idscore , num);
+            }
+        }
+         if(choice == 3){
+            if(!flag) printf("please input record first");
+            else{
+                Printlist(idscore , Descending , num , name);
+            }
+        }
+         if(choice == 4){
+            if(!flag) printf("please input record first");
+            else{
+                Printlist(idscore , Ascending , num ,name);
+            }
+        }
+         if(choice == 5){
+            if(!flag) printf("please input record first");
+            else{
+                Printlist2(idscore, Ascending , num , name);
+            }
+        }
+         if(choice == 6){
+           if(!flag) printf("please input record first");
+            else{
+                Print_by_name(name , idscore , num);
+            }
+        }
+         if(choice == 7){
+           if(!flag) printf("please input record first");
+            else{
+                Search_by_id(idscore , num , name);
+            }
+        }
+         if(choice == 8){
+            if(!flag) printf("please input record first");
+            else
+               Search_by_name(name , idscore , num);
+            }
+
+         if(choice == 9){
+            if(!flag) printf("please input record first");
+            else{
+                Analysis(idscore , num);
+            }
+        }
+         if(choice == 10){
+            if(!flag) printf("please input record first");
+            else{
+                Output(idscore , num , name);
+                Sum_avg(idscore , num);
+            }
+        }
+         if(choice == 11){
+            break;
+        }
+
+    }while(scanf("%d" , &choice));
+}
+/*函数名：Input， 输入：name[][]姓名，idscore[][]学号分数，输出：num人数，功能描述：录入每个学生的学号、姓名和考试成绩*/
+int Input(char name[][30] , int idscore[][30]){
+    int num,ret;
+    printf("Input numsSize\n");
+    ret = scanf("%d" , &num);
+    if(ret){
+        printf("Input name,student ID and score\n");
+        for (int i=0 ; i < num ; i++){
+            scanf("%s" , name[i]);
+            scanf("%d", &idscore[i][1]);
+            scanf("%d", &idscore[i][2]);
+
+        }
+        printf("Input finished\n");
+        return num;
+    }
+    else {
+            printf("Input error,please input anain\n");
+             return 0;
+    }
+
+}
+/*函数名：Sum_avg， 输入：idscore[][]学号分数，num人数，输出：无，功能描述：计算课程的总分和平均分*/
+void Sum_avg(int idscore[][30] , int num){
+    double sum , avg;
+    for(int i = 0 ; i < num ; i++){
+        sum += (double)idscore[i][2];
+    }
+    avg = sum/(double)num;
+    printf("sum = %lf\n" , sum);
+    printf("avg = %lf\n" , avg);
+}
+/*函数名：Printlist， 输入：idscore[][]学号分数，compare排序函数，num人数，name[][]姓名，输出：无，功能描述：按成绩输出名次表*/
+void Printlist(int idscore[][30], int (*compare)(int a , int b ) , int num ,char name[][30]){
+    int temp;
+    char tem[30];
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(compare(idscore[j][2] , idscore[j+1][2])){
+                temp =  idscore[j][2];
+                idscore[j][2] = idscore[j + 1][2];
+                idscore[j + 1][2] = temp;
+                temp = idscore[j][1];
+                idscore[j][1] = idscore[j + 1][1];
+                idscore[j + 1][1] = temp;
+                strcpy(tem , name[j]);
+                strcpy(name[j], name[j + 1]);
+                strcpy(name[j + 1], tem);
+            }
+        }
+    }
+    for(int i = 0 ; i < num ; i++){
+        printf("%d\t%d\t%s\t%d\n" , i+1 , idscore[i][1] , name[i] , idscore[i][2]);
+    }
+}
+/*函数名：Search_by_id， 输入：idscore[][]学号分数，num人数，name[][]姓名，输出：无，功能描述：按学号查询学生排名及其考试成绩*/
+void Search_by_id(int idscore[][30] , int num , char name[][30]){
+    int id;
+    int a = 1;
+    printf("input ID\n");
+    scanf ("%d" , &id);
+    Sort(name, idscore, num);
+    for(int i = 0 ; i < num ; i++){
+        if(id == idscore[i][1]){
+            printf("%d\t%d\t" , i+1 , idscore[i][2]);
+            a = 0;
+        }
+    }
+    if(a)printf("Can't find this student\n");
+}
+/*函数名：Ascending， 输入：两个数a，b，输出：a>b，功能描述：按由低到高排序*/
+int Ascending(int a , int b){
+    return a > b;
+}
+
+/*函数名：Descending， 输入：两个数a，b，输出：a<b，功能描述：按由高到低排序*/
+int Descending(int a , int b){
+    return a < b;
+}
+/*函数名：Search_by_name， 输入：name[][]姓名，idscore[][]学号分数，num人数，输出：无，功能描述：按姓名查询学生排名及其考试成绩*/
+void Search_by_name(char name[][30] ,int  idscore[][30] , int num){
+    int a = 1;
+    char n[30];
+    printf("Please input the name\n");
+    scanf("%s" , n);
+    Sort(name, idscore, num);
+    for(int i = 0 ; i < num ; i++){
+        if(! strcmp(n , name[i])){
+            printf("%d\t%d\t" , i+1 , idscore[i][2]);
+            a = 0;
+        }
+    }
+    if(a)printf("Can't find this student\n");
+}
+/*函数名：Print_by_name， 输入：name[][]姓名，idscore[][]学号分数，num人数，输出：无，功能描述：按由低到高排序*/
+void Print_by_name(char name[][30] , int idscore[][30] , int num){
+    char tem[30];
+    int temp;
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(strcmp(name[j], name[j+1]) > 0){
+                temp =  idscore[j][2];
+                idscore[j][2] = idscore[j + 1][2];
+                idscore[j + 1][2] = temp;
+                temp = idscore[j][1];
+                idscore[j][1] = idscore[j + 1][1];
+                idscore[j + 1][1] = temp;
+                strcpy(tem , name[j]);
+                strcpy(name[j], name[j + 1]);
+                strcpy(name[j + 1], tem);
+            }
+        }
+    }
+     for(int i = 0 ; i < num ; i++){
+        printf("%d\t%d\t%s\t%d\n" , i+1 , idscore[i][1] , name[i] , idscore[i][2]);
+    }
+}
+/*函数名：Printlist2， 输入：idscore[][]学号分数，compare排序函数，num人数，name[][]姓名，输出：无，功能描述：按由低到高排序*/
+void Printlist2(int idscore[][30], int (*compare)(int a , int b ) , int num , char name[][30]){
+    int temp;
+    char tem[30];
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(compare(idscore[j][1] , idscore[j+1][1])){
+                temp =  idscore[j][2];
+                idscore[j][2] = idscore[j + 1][2];
+                idscore[j + 1][2] = temp;
+                temp = idscore[j][1];
+                idscore[j][1] = idscore[j + 1][1];
+                idscore[j + 1][1] = temp;
+                strcpy(tem , name[j]);
+                strcpy(name[j], name[j + 1]);
+                strcpy(name[j + 1], tem);
+            }
+        }
+    }
+    for(int i = 0 ; i < num ; i++){
+        printf("%d\t%d\t%s\t%d\n" , i+1 , idscore[i][1] , name[i] , idscore[i][2]);
+    }
+}
+/*函数名：Sort， 输入：name[][]姓名，idscore[][]学号分数，num人数，输出：无，功能描述：按由高到低排序*/
+void Sort(char name[][30] , int idscore[][30] , int num){
+    int temp;
+    char tem[30];
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(idscore[j][2] < idscore[j+1][2]){
+                temp =  idscore[j][2];
+                idscore[j][2] = idscore[j + 1][2];
+                idscore[j + 1][2] = temp;
+                temp = idscore[j][1];
+                idscore[j][1] = idscore[j + 1][1];
+                idscore[j + 1][1] = temp;
+                strcpy(tem , name[j]);
+                strcpy(name[j], name[j + 1]);
+                strcpy(name[j + 1], tem);
+            }
+        }
+    }
+
+}
+/*函数名：Analysis， 输入：idscore[][]学号分数，num人数，输出：无，功能描述：按优秀（90-100分）、良好（80-89分）、中等（70 - 79分）、及格（60—69分）、不及格(0-
+59分)5个类别，统计每个类别的人数以及所占的百分比*/
+void Analysis(int idscore[][30] , int num){
+    int a,b,c,d,e;
+    a = b = c = d = e = 0;
+    for(int i = 0 ; i < num ; i++){
+        if(idscore[i][2] >= 90 && idscore[i][2] <= 100)a++;
+        if(idscore[i][2] >= 80 && idscore[i][2] <= 89)b++;
+        if(idscore[i][2] >= 70 && idscore[i][2] <= 79)c++;
+        if(idscore[i][2] >= 60 && idscore[i][2] <= 69)d++;
+        if(idscore[i][2] >= 0 && idscore[i][2] <= 59)e++;
+    }
+    printf("优秀人数：%d\t占比：%lf%%\n" , a ,(double)a*100/(double)num);
+    printf("良好人数：%d\t占比：%lf%%\n" , b ,(double)b*100/(double)num);
+    printf("中等人数：%d\t占比：%lf%%\n" , c ,(double)c*100/(double)num);
+    printf("及格人数：%d\t占比：%lf%%\n" , d ,(double)d*100/(double)num);
+    printf("不及格人数：%d\t占比：%lf%%\n" , e ,(double)e*100/(double)num);
+}
+/*函数名：Output， 输入：idscore[][]学号分数，num人数，name[][]姓名，输出：无，功能描述：输出每个学生的学号、姓名、考试成绩*/
+void Output(int idscore[][30] , int num , char name[][30]){
+    for(int i = 0 ; i < num ; i++){
+        printf("%d\t%s\t%d\n" , idscore[i][1] , name[i] , idscore[i][2]);
+    }
+}
