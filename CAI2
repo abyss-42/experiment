@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+   
+    srand(time(NULL));
+    int score;
+    do
+    {
+        int a, b, op, reply, answer, input, flag;
+
+        score = 0;
+        for(int i = 0; i < 10; i++)
+        {
+            flag = 0;
+            a = rand()%10 + 1;
+            b = rand()%10 + 1;
+            op =  rand()%4 + 1;
+            reply = rand()%4 + 1;
+            switch(op)
+            {
+            case 1:
+                printf("%d + %d\n", a, b);
+                answer = a + b;
+                break;
+            case 2:
+                printf("%d - %d\n", a, b);
+                answer = a - b;
+                break;
+            case 3:
+                printf("%d * %d\n", a, b);
+                answer = a * b;
+                break;
+            case 4:
+                while(a/b != (double)a/(double)b)
+                {
+                    a = rand()%10 + 1;
+                    b = rand()%10 + 1;
+                }
+                printf("%d / %d\n", a, b);
+                answer = a / b;
+                break;
+            }
+            scanf("%d", &input);
+            if(input == answer)
+            {
+                score ++;
+                flag = 1;
+            }
+            switch(reply)
+            {
+            case 1:
+                if(flag) printf("Very good!\n");
+                else printf("No, please try next subject.\n");
+                break;
+            case 2:
+                if(flag) printf("Excellent!\n");
+                else printf("Wrong. Be careful.\n");
+                break;
+            case 3:
+                if(flag) printf("Nice work!\n");
+                else printf("Don't give up!\n");
+                break;
+            case 4:
+                if(flag) printf("Keep up the good work!\n");
+                else printf("Not correct. Keep trying.\n");
+                break;
+            }
+        }
+    }
+    while(score < 8);
+    return 0;
+}
