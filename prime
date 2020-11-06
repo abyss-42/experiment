@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int Isprime(int a);
+int Reverse(int a);
+
+int main()
+{
+   
+    int result[20];
+    int j=0;
+    for (int i = 100; i<=200; i++){
+        if(Isprime(i)){
+            result[j] = i;
+            j++;
+            printf ("%d\t", i);
+            if((j)%10 == 0){
+                printf("\n");
+            }
+        }
+    }
+    printf("\n");
+    for(int k = 0; k < j; k++){
+        printf("%d\t", Reverse(result[k]));
+         if(k != 0 && (k+1)%10 == 0){
+                printf("\n");
+            }
+
+    }
+    return 0;
+}
+int Isprime(int a){
+    int flag = 1;
+    if((a%2 == 0)||(a%3 == 0)||(a%5 == 0)||(a%7 == 0)||(a%11 == 0)||(a%13 == 0)){
+        flag = 0;
+    }
+
+    return flag;
+}
+int Reverse (int a){
+    int m,n,p,answer;
+    m = a/100;
+    n = (a%100)/10;
+    p = a%10;
+    answer = p*100 + n*10 + m;
+    return answer;
+}
