@@ -1,0 +1,184 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Inputrecord(int ID[] , int score[]);
+void Output(int ID[] , int score[] , int num);
+void Sum_avg(int score[] , int num );
+void Printlist(int score[], int ID[] , int (*compare)(int a , int b) , int num);
+void Search(int ID[] , int score[] , int num);
+void Analysis(int score[] , int num);
+int Descending(int a , int b);
+int Ascending(int a , int b);
+void Printall(int score[] , int ID[] , int num);
+
+/*函数名：main， 输入：choice选择功能，输出：0*/
+int main()
+{
+   
+    int iID[30] , iscore[30] , ID1[30] , score1[30];
+    int input , numSize , flag = 0;
+
+    printf("1.Input record\n");
+    printf("2.Calculate total and average score of course\n");
+    printf("3.Sort in descending order by score\n");
+    printf("4.Sort in ascending order by score\n");
+    printf("5.Sort in ascending order by StudentID\n");
+    printf("6.Search by StudentID\n");
+    printf("7.Statistic analysis\n");
+    printf("8.List record\n");
+
+    printf("0.Exit\n");
+    printf("Please enter your choice\n");
+
+    scanf("%d" , &input);
+    do{
+        while(input < 0 && input > 8){
+            printf("error");
+            scanf("%d" , &input);
+        }
+
+        if(input == 1){
+            numSize = Inputrecord(iID , iscore);
+            flag = 1;
+            Output(iID , iscore , numSize);
+        }
+
+        if(input == 2){
+            if (!flag) printf("Please input record first\n");
+            else Sum_avg(iscore, numSize);
+        }
+        if(input == 3){
+            if (!flag) printf("Please input record first\n");
+            else Printlist(iscore, iID , Descending , numSize);
+        }
+        if(input == 4){
+            if (!flag) printf("Please input record first\n");
+            else Printlist(iscore, iID , Ascending , numSize);
+        }
+        if(input == 5){
+            if (!flag) printf("Please input record first\n");
+            else Printlist(iID, iscore , Ascending , numSize);
+        }
+        if (input == 6){
+            if (!flag) printf("Please input record first\n");
+            else Search(iID , iscore , numSize);
+        }
+        if(input == 7){
+            if (!flag) printf("Please input record first\n");
+            else Analysis(iscore , numSize);
+        }
+        if(input == 8){
+            if (!flag) printf("Please input record first\n");
+            else {
+                Output(iID , iscore ,numSize);
+                Sum_avg(iscore, numSize);
+                }
+            }
+
+        if(input == 0){
+            return 0;
+        }
+    }while(scanf("%d" , &input));
+    return 0;
+
+}
+/*函数名：Inputrecord， 输入：ID[]学号, score[]分数，输出：num人数，功能描述：录入每个学生的学号和考试成绩*/
+int Inputrecord(int ID[] , int score[]){
+    int num;
+    printf("Input numsSize\n");
+    scanf("%d" , &num);
+    printf("Input student ID and score\n");
+    for (int i=0 ; i < num ; i++){
+        scanf("%d %d" , &ID[i] , &score[i]);
+    }
+    printf("Input finished\n");
+    return num;
+}
+/*函数名：Output， 输入：ID[]学号, score[]分数，num人数，输出：无，功能描述：输出姓名学号*/
+void Output(int ID[] , int score[] , int num){
+    for(int i = 0 ; i < num ; i++){
+        printf("%d\t%d\n" , ID[i] , score[i]);
+    }
+}
+/*函数名：Sum_avg， 输入：ID[]学号, score[]分数，输出：无，功能描述：计算课程的总分和平均分*/
+void Sum_avg(int score[] , int num){
+    double sum , avg;
+    for(int i = 0 ; i < num ; i++){
+        sum += score[i];
+    }
+    avg = sum/num;
+    printf("sum = %lf\n" , sum);
+    printf("avg = %lf\n" , avg);
+}
+/*函数名：Printlist， 输入：ID[]学号, score[]分数，compare排序函数，num人数，输出：无，功能描述：按顺序排出名次表*/
+void Printlist(int score[], int ID[], int (*compare)(int a , int b ) , int num){
+    int temp;
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(compare(score[j] , score[j+1])){
+                temp =  score[j];
+                score[j] = score[j + 1];
+                score[j + 1] = temp;
+                temp =  ID[j];
+                ID[j] = ID[j + 1];
+                ID[j + 1] = temp;
+            }
+        }
+    }
+    for(int i = 0 ; i < num ; i++){
+        printf("%d\t%d\t%d\n" , i+1 , ID[i] , score[i]);
+    }
+}
+/*函数名：Ascending， 输入：两个数a，b，输出：a>b，功能描述：按由低到高排序*/
+int Ascending(int a , int b){
+    return a > b;
+}
+/*函数名：Descending， 输入：两个数a，b，输出：a<b，功能描述：按由高到低排序*/
+int Descending(int a , int b){
+    return a < b;
+}
+/*函数名：Search， 输入：ID[]学号, score[]分数，num人数，输出：无，功能描述：按学号查询学生排名及其考试成绩*/
+void Search(int ID[] , int score[] , int num){
+    int id , temp;
+    printf("input ID");
+    scanf ("%d" , &id);
+    int a = 1;
+    for(int i = 0 ; i < num - 1 ; i++){
+        for(int j = 0 ; j < num - 1 ; j++){
+            if(score[j] < score[j+1]){
+                temp =  score[j];
+                score[j] = score[j + 1];
+                score[j + 1] = temp;
+                temp =  ID[j];
+                ID[j] = ID[j + 1];
+                ID[j + 1] = temp;
+            }
+        }
+    }
+    for(int i = 0 ; i < num ; i++){
+        if(id == ID[i]){
+            printf("%d\t%d\n" , i+1 , score[i]);
+            a = 0;
+        }
+    }
+    if(a)printf("Can't find this student\n");
+}
+/*函数名：Analysis， 输入：score[]分数，num人数，输出：无，功能描述：按优秀（90—100分）、良好（80—89分）、中等（70—79分）、及格（60一69分）、不及格
+(0—59分)5个类别，统计每个类别的人数以及所占的百分比*/
+void Analysis(int score[] , int num){
+    int a,b,c,d,e;
+    a = b = c = d = e = 0;
+    for(int i = 0 ; i < num ; i++){
+        if(score[i] >= 90 && score[i] <= 100)a++;
+        if(score[i] >= 80 && score[i] <= 89)b++;
+        if(score[i] >= 70 && score[i] <= 79)c++;
+        if(score[i] >= 60 && score[i] <= 69)d++;
+        if(score[i] >= 0 && score[i] <= 59)e++;
+    }
+    printf("优秀人数：%d\t占比：%lf%%\n" , a ,(double)a*100/(double)num);
+    printf("良好人数：%d\t占比：%lf%%\n" , b ,(double)b*100/(double)num);
+    printf("中等人数：%d\t占比：%lf%%\n" , c ,(double)c*100/(double)num);
+    printf("及格人数：%d\t占比：%lf%%\n" , d ,(double)d*100/(double)num);
+    printf("不及格人数：%d\t占比：%lf%%\n" , e ,(double)e*100/(double)num);
+}
+
