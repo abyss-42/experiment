@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int a;
+    short b;
+    char c;
+    float d;
+    double e;
+   
+    printf("Please input int a:\n");
+    scanf("%d", &a);
+    printf("int a = %d, size of int is %d\n", a, sizeof(a));
+    printf("\n");
+    printf("Please input short b:\n");
+    scanf("%d", &b);
+    printf("short b = %d, size of short is %d\n", b, sizeof(b));
+    printf("\n");
+    printf("Please input char c:\n");
+    scanf(" %c", &c);
+    printf("char c = %c, size of char is %d\n", c, sizeof(c));
+    printf("\n");
+    printf("Please input float d:\n");
+    scanf("%f", &d);
+    printf("float d = %f, size of float is %d\n", d, sizeof(d));
+    printf("\n");
+    printf("Please input double e:\n");
+    scanf("%lf", &e);
+    printf("double e = %lf, size of double is %d\n", e, sizeof(e));
+
+    return 0;
+
+
+
+}
