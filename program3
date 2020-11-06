@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+ 
+   printf("Please input a letter:\n");
+   char a,b;
+   int i=0;
+   int k=0;
+   scanf("%c", &a);
+   b = a-32;
+   if(a <= 'z' && a >= 'a'){
+        for(i = 0;i < 8;i++){
+            if(i%2 == 0){
+                for(k = 0;k < 8;k++){
+                    printf("%c ", b);
+                }
+                printf("\n");
+            }
+            else{
+                for(k = 0;k < 8;k++){
+                    printf(" %c", b);
+                }
+                printf("\n");
+            }
+
+        }
+   }
+   else{
+        printf("error");
+   }
+   return 0;
+
+}
